@@ -36,25 +36,37 @@ class RegistrationController extends Controller
 //        $email = $_POST['email'];
 //        $password = $_POST['password'];
 
-        // Use a helper function for validation to make the code cleaner
-        $validationResult = $this->validateRegistrationInput($name, $email, $password);
+        // Check the validation results
+        $nameValid = validName($name);
+        $emailValid = validEmail($email);
+        $passwordValid = validPassword($password);
 
-        // Check the validation result
-        if (!$validationResult['success']) {
+        if (!$nameValid || !$emailValid || !$passwordValid) {
             // Handle validation error
             $this->render('register', [
-                'name_error' => $validationResult['errors']['name'] ?? '',
-                'email_error' => $validationResult['errors']['email'] ?? '',
-                'password_error' => $validationResult['errors']['password'] ?? '',
+                'name_error' => !$nameValid ? 'Name must be a string containing valid characters.' : '',
+                'email_error' => !$emailValid ? 'Invalid email.' : '',
+                'password_error' => !$passwordValid ? 'Password must be at least 8 characters and contain at least one symbol.' : '',
             ]);
             return;
         }
+        $this->handleRegistration($name, $email, $password);
+    }
 
+    /**
+     * Handle user registration logic.
+     * @param string $name
+     * @param string $email
+     * @param string $password
+     * @return void
+     */
+    private function handleRegistration(string $name, string $email, string $password): void
+    {
         try {
             // Check if the email is already registered
             $userRepository = new UserRepository();
             if ($userRepository->emailExists($email)) {
-                $this->render('register', ['error' => 'Email is already registered']);
+                $this->render('register', ['exist_error' => 'Email is already registered']);
                 return;
             }
 
@@ -78,27 +90,5 @@ class RegistrationController extends Controller
             // Display a user-friendly error message
             $this->render('register', ['error' => 'Error registering user. Please try again later.']);
         }
-    }
-
-    private function validateRegistrationInput(string $name, string $email, string $password): array
-    {
-        $validationResult = ['success' => true, 'errors' => []];
-
-        if (empty($name) || !is_string($name) || !ctype_alpha(str_replace([' ', '-', '\''], '', $name))) {
-            $validationResult['success'] = false;
-            $validationResult['errors']['name'] = 'Name must be a string containing valid characters.';
-        }
-
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $validationResult['success'] = false;
-            $validationResult['errors']['email'] = 'Invalid email.';
-        }
-
-        if (strlen($password) < 8 || !preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
-            $validationResult['success'] = false;
-            $validationResult['errors']['password'] = 'Password must be at least 8 characters and contain at least one symbol.';
-        }
-
-        return $validationResult;
     }
 }

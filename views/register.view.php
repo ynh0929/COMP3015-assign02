@@ -28,6 +28,9 @@
                                     <?php if (isset($email_error)): ?>
                                         <span style="color: red;"><?php echo h($email_error); ?></span>
                                     <?php endif; ?>
+                                    <?php if (isset($exist_error)): ?>
+                                        <span style="color: red;"><?php echo h($exist_error); ?></span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
 

@@ -13,7 +13,7 @@ class LoginController extends Controller
         $this->startSession();
 
         // If user is already authenticated, redirect to the main page
-        if ($this->isAuthenticated()) {
+        if (isAuthenticated()) {
             $this->redirect('/');
         }
         $this->render('login');
@@ -29,7 +29,7 @@ class LoginController extends Controller
         $this->startSession();
 
         // If user is already authenticated, redirect to the main page
-        if ($this->isAuthenticated()) {
+        if (isAuthenticated()) {
             $this->redirect('/');
         }
 
@@ -57,15 +57,6 @@ class LoginController extends Controller
             // Handle the error gracefully (e.g., redirect with an error message)
             $this->redirect('/login?error=Something+went+wrong');
         }
-    }
-
-    /**
-     * Check if the user is authenticated.
-     * @return bool
-     */
-    private function isAuthenticated(): bool
-    {
-        return isset($_SESSION['user_id']);
     }
 
 }

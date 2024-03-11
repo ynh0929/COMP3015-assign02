@@ -1,4 +1,4 @@
-# Assignment 2 Solution
+# A01194174 Yena Hwang - Assignment 2
 
 ## Setup
 
@@ -29,3 +29,9 @@ php -S localhost:7777 -t public/
 ```
 npx tailwindcss -i views/css/input.css -o ./public/dist/output.css --watch
 ```
+
+## Screen Recording and php.ini
+
+You can see the screen recording video and php.ini screenshot under the public folder
+
+

@@ -11,6 +11,7 @@ if (isset($_SESSION['user_id'])) {
     $authenticatedUser = $userRepository->getUserById($_SESSION['user_id']);
 }
 ?>
+
 <div class="mx-auto max-w-4xl sm:px-6 lg:px-8 mt-10">
     <form class="space-y-8" action="/settings/update" method="POST" enctype="multipart/form-data" id="file-upload-form">
 

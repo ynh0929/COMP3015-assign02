@@ -50,10 +50,9 @@ class SettingsController extends Controller
 
         // Fetch the existing user data
         $userRepository = new UserRepository();
-        $user = $userRepository->getUserById($authenticatedUserId);
 
         // Validate username
-        $validationResult = $this->validateUsername($newUsername);
+        $validationResult = validateUsername($newUsername);
 
         if (!$validationResult['success']) {
             // Handle validation error
@@ -83,31 +82,4 @@ class SettingsController extends Controller
         $this->redirect('/');
     }
 
-
-    /**
-     * Validate username.
-     * @param string $username
-     * @return array
-     */
-    private function validateUsername(string $username): array
-    {
-        $errors = [];
-
-        // Check if the username is empty
-        if (empty($username)) {
-            $errors['error'] = 'Username cannot be empty';
-            return ['success' => false, 'error' => $errors['error']];
-        }
-
-        // Check if the username is already taken
-        $userRepository = new UserRepository();
-        $existingUser = $userRepository->getUserByEmail($username);
-        if ($existingUser && $existingUser->id !== $_SESSION['user_id']) {
-            $errors['error'] = 'Username is already taken';
-            return ['success' => false, 'error' => $errors['error']];
-        }
-
-        // Username is valid
-        return ['success' => true];
-    }
 }
