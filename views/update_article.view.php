@@ -4,9 +4,6 @@
 <body>
 
 <div class="grid grid-cols-12 mt-20">
-    <?php if (isset($error) && $error): ?>
-        <p style="color: red;"><?= h($error); ?></p>
-    <?php endif; ?>
     <form class="space-y-6 col-start-4 col-span-6" action="/articles/update" method="POST">
         <h2 id="page-title" class="text-3xl text-center font-semibold text-indigo-600 mt-10">Edit Article</h2>
         <br>
@@ -30,7 +27,9 @@
                 </div>
             </div>
         </div>
-
+        <?php if (isset($error) && $error): ?>
+            <p style="color: red;"><?= h($error); ?></p>
+        <?php endif; ?>
         <div>
             <button type="submit" class="mt-6 w-full btn btn-primary">
                 Update Article
